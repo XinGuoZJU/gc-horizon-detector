@@ -11,13 +11,16 @@ end
 
 %% centerize coordinates to image center and map geometry (lines/points) to homogeneous space
 lines_homo = img2homo(seglines, xres, yres, focal);
-
+% seglines: line segments with end points; lines_homo: lines with ax + by + c = 0(maybe)
 
 %% sample horizon line
 
 %
 % find zenith VP
 %
+
+% lines_homo: 3 x number
+% zeniths_homo: 3x1, zengroups: 1 x num_index
 if opt.zenith_from_deep
   [zeniths_homo, zengroups] = vp_zenith_from_deep(lines_homo, deep, opt);
 else
@@ -98,8 +101,9 @@ stat.zen_homo = lines_normal(lines_homo(:,zengroups{maxHorCandidateId}));
 stat.zengroup = zengroups{maxHorCandidateId};
 stat.horgroup = candidates(maxHorCandidateId).horgroups;
 
-stat.vpsgroup = [stat.zengroup; stat.horgroup];
-stat.vps_homo = [stat.zen_homo, stat.vps_homo];
+stat.vpsgroup = [stat.zengroup; stat.horgroup];  % cell
+stat.vps_homo = [stat.zen_homo, stat.vps_homo];  % matrix
+
 
 %
 % score related

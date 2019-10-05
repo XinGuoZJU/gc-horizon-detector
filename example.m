@@ -3,7 +3,7 @@
 %
 
 addpath util
-addpath /path/to/caffe/matlab  % Change it to your matcaffe path
+addpath /home/guoxin/caffe/matlab
 
 imgDir = 'assets/imgs/';  % directory of input images
 outDir = 'outputs/';      % directory for storing results
@@ -18,7 +18,9 @@ compute_horizon(imgList, outDir, opt);
 
 %% visualize results
 
-predFiles = glob([outDir, '*.mat']);
+predFiles = glob([outDir, '*.mat'])
+
+predFiles
 
 for ix = 1:numel(predFiles)
   

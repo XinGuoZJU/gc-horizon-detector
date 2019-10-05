@@ -39,7 +39,7 @@ for ix = 1:N
   yres = size(im, 1);
   focal = max(xres, yres) / 2; % fake focal length
   [horizon_homo, stat] = horizon_detector(seglines, xres, yres, focal, deep, opt);
-  
+
   hor = homo2img(horizon_homo, xres, yres, focal);
   left = hor(1,:); right = hor(2,:);
   
@@ -51,13 +51,14 @@ for ix = 1:N
   prediction.right_cnn = deep.right_cnn;
   prediction.deep = deep;
   prediction.stat = stat;
+  prediction.seglines = seglines;
   
   fprintf('detecting horizon: %d / %d\n', ix, N);
   
   %
   % save the predictions
   %
-  save_path = sprintf('%s/%04d.mat', out_dir, ix);
+  save_path = sprintf('%s/%03d.mat', out_dir, ix);
   save(save_path, 'prediction')
   
 end
