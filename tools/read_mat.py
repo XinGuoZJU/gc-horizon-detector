@@ -8,7 +8,9 @@ def load_data(data_name):
     data = sio.loadmat(data_name)
     prediction = data['prediction'][0,0]
     name, im_sz, left, right, left_cnn, right_cnn, deep, stat, seglines = prediction
-    
+   
+    name = name[0]
+    im_sz = im_sz[0].tolist()
     stat = stat[0,0]
     vps_homo, zen_homo, zengroup, horgroup, vpsgroup, horCandidates_homo, \
     horCandidateScores, maxHorCandidateId, allCandidates = stat
@@ -28,7 +30,7 @@ def load_data(data_name):
             ind = item[0].T.tolist()[0]
         group_ind.append(ind)
 
-    return name[0], im_sz[0], line_segs, vps, group_ind
+    return name, im_sz, line_segs, vps, group_ind
 
 
 def group2group(group, line_number):
