@@ -75,8 +75,8 @@ def visualize(line_seg, pred_group, save_name, vp=None):
 
 
 if __name__ == '__main__':
-    org_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/tools/data/data.json'
-    save_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/tools/viz_line'
+    org_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/data/data.json'
+    save_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/viz_line'
     os.makedirs(save_path, exist_ok=True)
 
     with open(org_path, 'r') as f:

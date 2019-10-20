@@ -104,10 +104,10 @@ def process(data_list, save_path):
 
 
 if __name__ == '__main__':
-    path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/outputs'
-    data_list = [os.path.join(path, item) for item in os.listdir(path)]
+    path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/output'
+    data_list = [os.path.join(path, dir_path + '/data.mat') for dir_path in os.listdir(path)] 
     
-    save_path = 'data/data.json'
+    save_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/data/data.json'
     process(data_list, save_path)
     
 

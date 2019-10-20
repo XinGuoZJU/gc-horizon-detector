@@ -1,6 +1,6 @@
-
+Detecting Vanishing Points using Global Image Context in a Non-Manhattan World, CVPR 2016
 main:
-    example.m
+    main.m
 
 tools:
     tools/read_mat.py

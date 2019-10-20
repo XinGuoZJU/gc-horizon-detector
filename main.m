@@ -6,7 +6,7 @@ addpath util
 addpath /home/guoxin/caffe/matlab
 
 imgDir = 'assets/imgs/';  % directory of input images
-outDir = 'outputs/';      % directory for storing results
+outDir = 'outputs';      % directory for storing results
 
 imgList = glob([imgDir, '*.jpg']);
 
@@ -15,7 +15,7 @@ opt = default_option();
 
 compute_horizon(imgList, outDir, opt);
 
-
+%{
 %% visualize results
 
 predFiles = glob([outDir, '*.mat'])
@@ -38,5 +38,5 @@ for ix = 1:numel(predFiles)
   legend('FINAL Horizon', 'CNN Horizon')
   disp(ix)
   pause(.5)
-  
 end
+%}

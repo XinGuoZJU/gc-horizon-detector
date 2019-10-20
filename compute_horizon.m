@@ -58,8 +58,15 @@ for ix = 1:N
   %
   % save the predictions
   %
-  save_path = sprintf('%s/%03d.mat', out_dir, ix);
-  save(save_path, 'prediction')
+  % save_path = sprintf('%s/%03d.mat', out_dir, ix);
+  image_name_list = strsplit(imageList{ix}, '/');
+  image_name = image_name_list{end};
+  image_name = strsplit(image_name, '.');
+  image_name = image_name{1};
+  save_path = [out_dir, '/', image_name];
+  mkdir(save_path);
+
+  save([save_path, '/data.mat'], 'prediction')
   
 end
 
