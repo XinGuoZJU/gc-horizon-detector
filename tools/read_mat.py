@@ -14,12 +14,14 @@ def load_data(data_name):
     stat = stat[0,0]
     vps_homo, zen_homo, zengroup, horgroup, vpsgroup, horCandidates_homo, \
     horCandidateScores, maxHorCandidateId, allCandidates = stat
-
+    # In vps_homo, the first one is zen_home, others are horizon vps.
+    
     # seglines: number x 4 (two endpoints)
     line_segs = seglines.tolist()
 
-    # vps_homo: 3 x number_vps
+    # vps_homo: 3 x number_vps, the first vp is veritcal, others are horizon vps sorted by scores.
     vps = np.array([vps_homo[0] / vps_homo[2], vps_homo[1] / vps_homo[2]]).T.tolist()
+    vps = vps[:3]
     
     # vpsgroup = vpsgroup[0]
     group_ind = []
@@ -37,6 +39,7 @@ def group2group(group, line_number):
     # group: group_number x ind
     group_output = -np.ones(line_number).astype(np.int)
     group_number = len(group)
+    # group_number = min(3, len(group))
     for g in range(group_number):
         for ind in group[g]:
             group_output[ind - 1] = g
@@ -95,7 +98,9 @@ def process(data_list, save_path):
         line_segs_output, new_lines_output = lineseg2line(line_segs, image_size)
         group_output = group2group(group, len(line_segs))
 
-        image_name = image_path.split('/')[-1]
+        image_names = image_path.split('/')
+        image_name = os.path.join(image_names[-2], image_names[-1])
+        
         json_out = {'image_path': image_name, 'line': new_lines_output, 'org_line': line_segs_output, 
                 'group': group_output, 'vp': vps_output} 
 
@@ -105,7 +110,10 @@ def process(data_list, save_path):
 
 if __name__ == '__main__':
     path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/output'
-    data_list = [os.path.join(path, dir_path + '/data.mat') for dir_path in os.listdir(path)] 
+    dir_list = [os.path.join(path, dir_path) for dir_path in os.listdir(path)]
+    data_list = []
+    for dirs in dir_list:
+        data_list += [os.path.join(dirs, dir_path + '/data.mat') for dir_path in os.listdir(dirs)]
     
     save_path = '/n/fs/vl/xg5/workspace/baseline/gc-horizon-detector/dataset/YUD/data/data.json'
     process(data_list, save_path)

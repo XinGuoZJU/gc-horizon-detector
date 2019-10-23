@@ -95,7 +95,7 @@ stat = struct();
 %
 % vp related
 %
-stat.vps_homo = candidates(maxHorCandidateId).vps_homo;
+stat.vps_homo = candidates(maxHorCandidateId).vps_homo;  # It is sorted according to scores.
 stat.zen_homo = lines_normal(lines_homo(:,zengroups{maxHorCandidateId}));
 
 stat.zengroup = zengroups{maxHorCandidateId};
