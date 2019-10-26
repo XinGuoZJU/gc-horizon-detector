@@ -11,7 +11,7 @@ def load_data(data_name):
    
     name = name[0]
     im_sz = im_sz[0].tolist()
-    stat = stat[0,0]
+    stat = stat[0, 0]
     vps_homo, zen_homo, zengroup, horgroup, vpsgroup, horCandidates_homo, \
     horCandidateScores, maxHorCandidateId, allCandidates = stat
     # In vps_homo, the first one is zen_home, others are horizon vps.

@@ -1,4 +1,4 @@
-function compute_horizon(imageList, out_dir, opt)
+function compute_horizon(imageList, out_dir, opt, dataset_name)
 %
 % imagesList: cell array storing image pathes
 % out_dir: output directory
@@ -20,7 +20,8 @@ caffe.reset_all();
 caffe.set_mode_cpu();
 net = caffe.Net('assets/models/deploy.net', 'assets/models/googlenet_places.caffemodel', 'test');
 
-for ix = 1:N 
+for ix = 1:N
+try
   %
   % extract line segments
   %
@@ -68,7 +69,14 @@ for ix = 1:N
   mkdir(save_path);
 
   save([save_path, '/data.mat'], 'prediction')
-  
+
+catch
+  fname = imageList{ix};
+  fileID = fopen([dataset_name, '_error.txt'], 'a');
+  fprintf(fileID, [fname, '\n']);
+  fclose(fileID);
+end
+
 end
 
 

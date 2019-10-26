@@ -4,16 +4,26 @@ close all
 addpath util
 addpath /home/guoxin/caffe/matlab
 
-dataset_name = 'YUD';
+dataset_name = 'SceneCityUrban3D';
+
 if strcmp(dataset_name, 'YUD')
     datapath = '/n/fs/vl/xg5/Datasets/YUD/YorkUrbanDB';
     savepath = 'dataset/YUD/output';
     img_type = 'jpg';
-elseif strcmp(dataset_name, 'scannet')
-    datapath = '/n/fs/vl/xg5/Datasets/neurodata/scannet-vp';
-    savepath = 'dataset/scannet-vp/output';
+elseif strcmp(dataset_name, 'ScanNet')
+    datapath = '/n/fs/vl/xg5/Datasets/ScanNet/scannet-vp';
+    savepath = 'dataset/ScanNet/output';
+    img_type = 'png';
+elseif strcmp(dataset_name, 'SceneCityUrban3D')
+    datapath = '/n/fs/vl/xg5/Datasets/SceneCityUrban3D/su3';
+    savepath = 'dataset/SceneCityUrban3D/output';
+    img_type = 'png';
+elseif strcmp(dataset_name, 'SUNCG')
+    datapath = '/n/fs/vl/xg5/Datasets/SUNCG/mlt_v2';
+    savepath = 'dataset/SUNCG/output';
     img_type = 'png';
 end
+
 
 dirs = dir(datapath);  % struct
 
@@ -35,5 +45,5 @@ end
 % get default configuration
 opt = default_option();
 
-compute_horizon(img_list, savepath, opt);
+compute_horizon(img_list, savepath, opt, dataset_name);
 

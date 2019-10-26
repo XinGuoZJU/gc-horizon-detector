@@ -13,7 +13,7 @@ imgList = glob([imgDir, '*.jpg']);
 % get default configuration
 opt = default_option();
 
-compute_horizon(imgList, outDir, opt);
+compute_horizon(imgList, outDir, opt, '');
 
 %{
 %% visualize results
