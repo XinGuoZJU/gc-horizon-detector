@@ -45,5 +45,5 @@ end
 % get default configuration
 opt = default_option();
 
-compute_horizon(img_list, savepath, opt, dataset_name);
+compute_horizon(img_list, savepath, opt, dataset_name, '');
 

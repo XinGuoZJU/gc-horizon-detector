@@ -1,7 +1,9 @@
 function [seglines, temp_dir] =  extract_linesegment(im, LSD_BIN_)
 
 % temp directory for LS extraction
-temp_dir = '/tmp/ls_extraction_temp/';
+% temp_dir = '/tmp/ls_extraction_temp/';
+temp_dir = datestr(now,'yyyymmddHHMMSSFFF');
+
 if exist(temp_dir, 'dir'); system(['rm -r ' temp_dir]); end
 mkdir(temp_dir);
 
@@ -10,7 +12,7 @@ SET = char(['a':'z' '0':'9']) ;
 ids = ceil(length(SET)*rand(1,20)) ; % with repeat
 name = SET(ids) ;
 
-pgm_path = [temp_dir name '.pgm'];
+pgm_path = [temp_dir '/' name '.pgm'];
 imwrite(im, pgm_path);
 
 segFile = [pgm_path '.txt'];

@@ -2,37 +2,32 @@ import scipy.io as sio
 import numpy as np
 import json
 import os
+import math
 
 
 def load_data(data_name):
     data = sio.loadmat(data_name)
     prediction = data['prediction'][0,0]
     name, im_sz, left, right, left_cnn, right_cnn, deep, stat, seglines = prediction
-   
+     
     name = name[0]
     im_sz = im_sz[0].tolist()
     stat = stat[0, 0]
+    
+    try:
+        len(stat)
+    except:
+        return [], [], []
     vps_homo, zen_homo, zengroup, horgroup, vpsgroup, horCandidates_homo, \
     horCandidateScores, maxHorCandidateId, allCandidates = stat
+    
     # In vps_homo, the first one is zen_home, others are horizon vps.
     
-    # seglines: number x 4 (two endpoints)
-    line_segs = seglines.tolist()
-
     # vps_homo: 3 x number_vps, the first vp is veritcal, others are horizon vps sorted by scores.
     vps = np.array([vps_homo[0] / vps_homo[2], vps_homo[1] / vps_homo[2]]).T.tolist()
     vps = vps[:3]
     
-    # vpsgroup = vpsgroup[0]
-    group_ind = []
-    for i, item in enumerate(vpsgroup):
-        if i == 0:
-            ind = item[0].tolist()[0]
-        else:
-            ind = item[0].T.tolist()[0]
-        group_ind.append(ind)
-
-    return name, im_sz, line_segs, vps, group_ind
+    return name, im_sz, vps
 
 
 def group2group(group, line_number):
@@ -85,41 +80,41 @@ def process(data_list, save_path):
 
     for data_name in data_list:
         print(data_name)
-        image_path, image_size, line_segs, vps, group = load_data(data_name)
+        image_path, image_size, vps = load_data(data_name)
         # there are overlap for each group
         # image_size: height x width
         
+        if len(vps) < 2:
+            continue
+
         fake_focal = max(image_size) / 2
         vps_output = []
         for vp in vps:
             new_vp = [(vp[1] * fake_focal ) / (image_size[0] / 2), (vp[0] * fake_focal) / (image_size[1] / 2)]
             vps_output.append(new_vp)
 
-        line_segs_output, new_lines_output = lineseg2line(line_segs, image_size)
-        group_output = group2group(group, len(line_segs))
-
         image_names = image_path.split('/')
         image_name = os.path.join(image_names[-2], image_names[-1])
         
-        json_out = {'image_path': image_name, 'line': new_lines_output, 'org_line': line_segs_output, 
-                'group': group_output, 'vp': vps_output} 
+        json_out = {'image_path': image_name, 'vp': vps_output} 
 
         json.dump(json_out, save_op)
         save_op.write('\n')
 
 
 if __name__ == '__main__':
-    data_name = 'SUNCG'   # 'YUD', 'ScanNet', 'SceneCityUrban3D', 'SUNCG'
+    data_name = 'ScanNet'   # 'YUD', 'ScanNet', 'SceneCityUrban3D', 'SUNCG'
 
     path = '/n/fs/vl/xg5/workspace/baseline/gc_horizon_detector/dataset/' + data_name + '/output'
     dir_list = [os.path.join(path, dir_path) for dir_path in os.listdir(path)]
     data_list = []
     for dirs in dir_list:
         data_list += [os.path.join(dirs, dir_path + '/data.mat') for dir_path in os.listdir(dirs)]
-    
+
     save_path = '/n/fs/vl/xg5/workspace/baseline/gc_horizon_detector/dataset/' + data_name + '/data'
     os.makedirs(save_path, exist_ok=True)
     save_file = os.path.join(save_path, 'data.json')
+
     process(data_list, save_file)
     
 

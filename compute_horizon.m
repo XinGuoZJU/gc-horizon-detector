@@ -1,4 +1,4 @@
-function compute_horizon(imageList, out_dir, opt, dataset_name)
+function compute_horizon(imageList, out_dir, opt, dataset_name, idx_str)
 %
 % imagesList: cell array storing image pathes
 % out_dir: output directory
@@ -68,11 +68,14 @@ try
   save_path = [out_dir, '/', dir_name, '/', image_name];
   mkdir(save_path);
 
-  save([save_path, '/data.mat'], 'prediction')
-
+  save([save_path, '/data.mat'], 'prediction');
+  %% clean up
+  if exist(temp_dir, 'dir')
+    system(['rm -r ' temp_dir]);
+  end
 catch
   fname = imageList{ix};
-  fileID = fopen([dataset_name, '_error.txt'], 'a');
+  fileID = fopen([dataset_name, '_', idx_str, '_error.txt'], 'a');
   fprintf(fileID, [fname, '\n']);
   fclose(fileID);
 end
@@ -80,7 +83,3 @@ end
 end
 
 
-%% clean up
-if exist(temp_dir, 'dir')
-  system(['rm -r ' temp_dir]);
-end
