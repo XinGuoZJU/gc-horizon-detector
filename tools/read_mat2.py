@@ -96,14 +96,14 @@ def process(data_list, save_path):
         image_names = image_path.split('/')
         image_name = os.path.join(image_names[-2], image_names[-1])
         
-        json_out = {'image_path': image_name, 'vp': vps_output} 
+        json_out = {'image_path': image_name, 'image_size': image_size, 'vp': vps_output} 
 
         json.dump(json_out, save_op)
         save_op.write('\n')
 
 
 if __name__ == '__main__':
-    data_name = 'ScanNet'   # 'YUD', 'ScanNet', 'SceneCityUrban3D', 'SUNCG'
+    data_name = 'SUNCG_aug'   # 'YUD', 'ScanNet', 'SceneCityUrban3D', 'SUNCG'
 
     path = '/n/fs/vl/xg5/workspace/baseline/gc_horizon_detector/dataset/' + data_name + '/output'
     dir_list = [os.path.join(path, dir_path) for dir_path in os.listdir(path)]
